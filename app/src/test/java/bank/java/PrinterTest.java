@@ -8,48 +8,30 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 public class PrinterTest {
-    private class MockDeposit implements ITransaction {
-        public float getAmount() {
-            return 5000;
-        }
-
-        public LocalDateTime getDate() {
-            return LocalDateTime.parse("2022-06-10 12:30", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        }
-
-        public TransactionType getType() {
-            return TransactionType.DEPOSIT;
-        }
-    }
-
-    private class MockWithdrawal implements ITransaction {
-        public float getAmount() {
-            return 3000;
-        }
-
-        public LocalDateTime getDate() {
-            return LocalDateTime.parse("2022-06-11 12:30", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        }
-
-        public TransactionType getType() {
-            return TransactionType.WITHDRAWAL;
-        }
-    }
-
     @Test
-    public void canPrintTransaction() {
-        Printer subject = new Printer();
-        MockDeposit t = new MockDeposit();
+    public void canPrintTransactionHistoryItem() {
+        String date = "2022-06-10 12:30";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
 
-        assertEquals(subject.printTransaction(t, 5000), "|| 2022-06-10    || 5000.00       ||               || 5000.00       \n");
+        Printer subject = new Printer();
+        TransactionHistoryItem t = new TransactionHistoryItem(dateTime, 5000, 0, 5000);
+
+        assertEquals(subject.printTransaction(t), "|| 2022-06-10    || 5000.00       ||               || 5000.00       \n");
     }
 
     @Test 
     public void canPrintTransactionHistory() {
+        String date1 = "2022-06-10 12:30";
+        String date2 = "2022-06-11 12:30";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime1 = LocalDateTime.parse(date1, formatter);
+        LocalDateTime dateTime2 = LocalDateTime.parse(date2, formatter);
+
         Printer subject = new Printer();
-        MockDeposit t1 = new MockDeposit();
-        MockWithdrawal t2 = new MockWithdrawal();
-        MockDeposit t3 = new MockDeposit();
+        TransactionHistoryItem t1 = new TransactionHistoryItem(dateTime1, 5000, 0, 5000);
+        TransactionHistoryItem t2 = new TransactionHistoryItem(dateTime1, 5000, 0, 10000);
+        TransactionHistoryItem t3 = new TransactionHistoryItem(dateTime2, 0, 3000, 7000);
 
         String expectedOutput = "|| 2022-06-10    || 5000.00       ||               || 5000.00       \n|| 2022-06-10    || 5000.00       ||               || 10000.00      \n|| 2022-06-11    ||               || 3000.00       || 7000.00       \n";
 

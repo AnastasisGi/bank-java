@@ -5,13 +5,17 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Printer {
-    private Comparator<ITransaction> sortByTransactionDateAscending = new Comparator<ITransaction>() {
-        public int compare(ITransaction t1, ITransaction t2) {
-            return t1.getDate().compareTo(t2.getDate());
-        }
-    };
+    // private Comparator<TransactionHistoryItem> sortByTransactionDateAscending = new Comparator<TransactionHistoryItem>() {
+    //     public int compare(TransactionHistoryItem t1, TransactionHistoryItem t2) {
+    //         return t1.getDate().compareTo(t2.getDate());
+    //     }
+    // };
 
     private String printCurrency(float amount) {
+        if(amount == 0) {
+            return "";
+        }
+
         return String.format("%.2f", amount);
     }
 
@@ -19,31 +23,27 @@ public class Printer {
         return String.format("|| %-14s", columnData);
     }
 
-    public String printTransaction(ITransaction transaction, float balance) {
+    public String printTransaction(TransactionHistoryItem transaction) {
         String dateCol = printColumn(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(transaction.getDate()));
-        String creditCol = printColumn(
-                transaction.getType() == TransactionType.WITHDRAWAL ? "" : printCurrency(transaction.getAmount()));
-        String debitCol = printColumn(
-                transaction.getType() == TransactionType.DEPOSIT ? "" : printCurrency(transaction.getAmount()));
-        String balanceCol = printColumn(printCurrency(balance));
+        String creditCol = printColumn(printCurrency(transaction.getCredit()));
+        String debitCol = printColumn(printCurrency(transaction.getDebit()));
+        String balanceCol = printColumn(printCurrency(transaction.getBalance()));
         return dateCol.concat(creditCol).concat(debitCol).concat(balanceCol).concat("\n");
     }
 
-    public String printHistory(List<ITransaction> transactions) {
-        StringBuilder output = new StringBuilder();
+    public String printHistory(List<TransactionHistoryItem> transactions) {
 
-        transactions
-        .stream()
-        .sorted(sortByTransactionDateAscending)
-        .reduce(0.0f, (balance, t) -> {
-            float newBalance = t.getType() == TransactionType.DEPOSIT ? balance + t.getAmount()
-                    : balance - t.getAmount();
+        // transactions
+        // .stream()
+        // .sorted(sortByTransactionDateAscending)
+        // .reduce(0.0f, (balance, t) -> {
+        //     float newBalance = balance + t.getCredit() - t.getDebit();
 
-            output.append(printTransaction(t, newBalance));
+        //     output.append(printTransaction(t));
 
-            return newBalance;
-        }, Float::sum);
+        //     return newBalance;
+        // }, Float::sum);
 
-        return output.toString();
+        return transactions.stream().map(t -> printTransaction(t)).reduce("", String::concat);
     }
 }
