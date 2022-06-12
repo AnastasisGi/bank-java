@@ -24,9 +24,9 @@ public class AccountTest {
         Clock clock1 = Clock.fixed(dateTime1.atZone(zoneId).toInstant(), zoneId);
         Clock clock2 = Clock.fixed(dateTime2.atZone(zoneId).toInstant(), zoneId);
 
-        Transaction t1 = new Transaction(1000, clock1);
-        Transaction t2 = new Transaction(2000, clock1);
-        Transaction t3 = new Transaction(-1000, clock2);
+        Transaction t1 = new Transaction(1000, TransactionType.DEPOSIT, clock1);
+        Transaction t2 = new Transaction(2000, TransactionType.DEPOSIT, clock1);
+        Transaction t3 = new Transaction(1000, TransactionType.WITHDRAWAL, clock2);
 
         Account subject = new Account(new ArrayList<Transaction>(Arrays.asList(t1, t3, t2)));
 

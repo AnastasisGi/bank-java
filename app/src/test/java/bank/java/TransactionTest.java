@@ -24,7 +24,7 @@ public class TransactionTest {
 
     @Test
     public void canCreateTransaction() {
-        Transaction subject = new Transaction(1000, clock);
+        Transaction subject = new Transaction(1000, TransactionType.DEPOSIT, clock);
         assertEquals(1000, subject.getAmount(), 0);
         assertEquals(TransactionType.DEPOSIT, subject.getType());
         assertEquals(LocalDateTime.now(clock) ,subject.getDate());
