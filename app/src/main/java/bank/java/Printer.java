@@ -5,11 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Printer {
-    // private Comparator<TransactionHistoryItem> sortByTransactionDateAscending = new Comparator<TransactionHistoryItem>() {
-    //     public int compare(TransactionHistoryItem t1, TransactionHistoryItem t2) {
-    //         return t1.getDate().compareTo(t2.getDate());
-    //     }
-    // };
+   
 
     private String printCurrency(float amount) {
         if(amount == 0) {
