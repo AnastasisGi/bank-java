@@ -8,7 +8,7 @@ enum TransactionType {
     WITHDRAWAL
 }
 
-public class Transaction {
+public class Transaction implements ITransaction {
     private float amount;
     private LocalDateTime date;
     private TransactionType type;
