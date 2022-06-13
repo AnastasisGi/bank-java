@@ -33,7 +33,7 @@ public class PrinterTest {
         TransactionHistoryItem t2 = new TransactionHistoryItem(dateTime1, 5000, 0, 10000);
         TransactionHistoryItem t3 = new TransactionHistoryItem(dateTime2, 0, 3000, 7000);
 
-        String expectedOutput = "|| 2022-06-10    || 5000.00       ||               || 5000.00       \n|| 2022-06-10    || 5000.00       ||               || 10000.00      \n|| 2022-06-11    ||               || 3000.00       || 7000.00       \n";
+        String expectedOutput = "|| Date          || Credit        || Debit         || Balance       \n|| 2022-06-10    || 5000.00       ||               || 5000.00       \n|| 2022-06-10    || 5000.00       ||               || 10000.00      \n|| 2022-06-11    ||               || 3000.00       || 7000.00       \n";
 
         assertEquals(expectedOutput, subject.printHistory(Arrays.asList(t1, t2, t3)));
     }

@@ -5,6 +5,7 @@ package bank.java;
 
 public class App {
     public static void main(String[] args) {
-        System.out.println("ONLINE");
+        Teller teller = new Teller();
+        teller.start();
     }
 }
