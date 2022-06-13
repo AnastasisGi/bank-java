@@ -41,5 +41,9 @@ public class Account {
         .sorted(sortByTransactionDateAscending)
         .collect(transactionHistoryCollector);
     }
+
+    public void addTransaction(Transaction transaction) {
+        transactions.add(transaction);
+    }
      
 }
