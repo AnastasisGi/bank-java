@@ -18,10 +18,6 @@ public class Transaction {
     }
 
     public Transaction(float amount, TransactionType type, Clock clock) {
-        if(amount < 0) {
-            throw new RuntimeException("Amount must be positive");
-        }
-
         this.amount = amount;
         this.type = type;
         this.date = LocalDateTime.now(clock);

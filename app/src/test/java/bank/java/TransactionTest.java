@@ -30,12 +30,4 @@ public class TransactionTest {
         assertEquals(TransactionType.DEPOSIT, subject.getType());
         assertEquals(LocalDateTime.now(clock), subject.getDate());
     }
-
-    @Test
-    public void cannotCreateNegativeAmountTransactions() {
-        RuntimeException e = assertThrows(
-                RuntimeException.class, () -> new Transaction(-1000, TransactionType.DEPOSIT, clock));
-
-        assertEquals("Amount must be positive", e.getMessage());
-    }
 }

@@ -16,20 +16,16 @@ public class Teller {
                 "BANKBOT3000 Here.\nWhat would you like to do?\n\nEnter a choice between 1 and 4 and hit return\n\n1: Make deposit\n2: Make withdrawal\n3: Get statement\n4: Exit");
 
         int userChoice = this.choiceScanner.nextInt();
-        
-        if(userChoice == 1) {
+
+        if (userChoice == 1) {
             makeDeposit();
-        }
-        else if(userChoice == 2) {
+        } else if (userChoice == 2) {
             makeWithdrawal();
-        }
-        else if(userChoice == 3) {
+        } else if (userChoice == 3) {
             getStatement();
-        }
-        else if(userChoice == 4) {
+        } else if (userChoice == 4) {
             stop();
-        }
-        else {
+        } else {
             stop();
         }
     }
@@ -39,13 +35,20 @@ public class Teller {
 
         float amount = this.choiceScanner.nextFloat();
 
-        Transaction t = new Transaction(amount, TransactionType.DEPOSIT);
+        if (amount < 0) {
+            System.out.println("Amount must be positive!\n");
+            makeDeposit();
+        }
 
-        this.account.addTransaction(t);
+        else {
+            Transaction t = new Transaction(amount, TransactionType.DEPOSIT);
 
-        System.out.println("I'm all done with that deposit.\n");
+            this.account.addTransaction(t);
 
-        start();
+            System.out.println("I'm all done with that deposit.\n");
+
+            start();
+        }
     }
 
     public void makeWithdrawal() {
@@ -53,13 +56,18 @@ public class Teller {
 
         float amount = this.choiceScanner.nextFloat();
 
-        Transaction t = new Transaction(amount, TransactionType.WITHDRAWAL);
+        if (amount < 0) {
+            System.out.println("Amount must be positive!\n");
+            makeWithdrawal();
+        } else {
+            Transaction t = new Transaction(amount, TransactionType.WITHDRAWAL);
 
-        this.account.addTransaction(t);
+            this.account.addTransaction(t);
 
-        System.out.println("I'm all done with that withdrawal.\n");
-        
-        start();
+            System.out.println("I'm all done with that withdrawal.\n");
+
+            start();
+        }
     }
 
     public void getStatement() {
