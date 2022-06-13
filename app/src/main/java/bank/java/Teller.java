@@ -13,7 +13,7 @@ public class Teller {
 
     public void start() {
         System.out.println(
-                "BANKBOT3000 Here.\n\nWhat would you like to do?\nEnter a choice between 1 and 4 and hit return\n\n1: Make deposit\n2: Make withdrawal\n3: Get statement\n4: Exit");
+                "BANKBOT3000 Here.\nWhat would you like to do?\n\nEnter a choice between 1 and 4 and hit return\n\n1: Make deposit\n2: Make withdrawal\n3: Get statement\n4: Exit");
 
         int userChoice = this.choiceScanner.nextInt();
         
@@ -57,7 +57,7 @@ public class Teller {
 
         this.account.addTransaction(t);
 
-        System.out.println("I'm all done with that withdrawal.");
+        System.out.println("I'm all done with that withdrawal.\n");
         
         start();
     }
@@ -65,7 +65,7 @@ public class Teller {
     public void getStatement() {
         Printer p = new Printer();
         System.out.println(p.printHistory(this.account.getAccountHistory()));
-        System.out.println("I'm all done with getting that statement.");
+        System.out.println("I'm all done with getting that statement.\n");
         start();
     }
 
