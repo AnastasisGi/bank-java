@@ -1,43 +1,40 @@
 package bank.java;
 
-import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
-import java.time.LocalDateTime;
-import java.time.Clock;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-
 public class PrinterTest {
-    private static Clock clock1 = Clock.systemDefaultZone();
-    private static Clock clock2 = Clock.systemDefaultZone();
-    private static ZoneId zoneId = ZoneId.systemDefault();
-
-    @Before
-    public void setupTests() {
-        String time1 = "2022-06-10 12:30";
-        String time2 = "2022-06-11 12:30";
+    @Test
+    public void canPrintTransactionHistoryItem() {
+        String date = "2022-06-10 12:30";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime dateTime1 = LocalDateTime.parse(time1, formatter);
-        LocalDateTime dateTime2 = LocalDateTime.parse(time2, formatter);
+        LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
 
-        clock1 = Clock.fixed(dateTime1.atZone(zoneId).toInstant(), zoneId);
-        clock2 = Clock.fixed(dateTime2.atZone(zoneId).toInstant(), zoneId);
+        Printer subject = new Printer();
+        TransactionHistoryItem t = new TransactionHistoryItem(dateTime, 5000, 0, 5000);
+
+        assertEquals(subject.printTransaction(t), "|| 2022-06-10    || 5000.00       ||               || 5000.00       \n");
     }
 
-    @Test
-    public void canPrintAListOfTransactions() {
-        Transaction testTransaction = new Transaction(1000, clock1);
-        Transaction testTransaction2 = new Transaction(-500, clock2);
-        ArrayList<Transaction> testData = new ArrayList<Transaction>(Arrays.asList(testTransaction, testTransaction2));
-    
-        Printer subject = new Printer();
+    @Test 
+    public void canPrintTransactionHistory() {
+        String date1 = "2022-06-10 12:30";
+        String date2 = "2022-06-11 12:30";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime1 = LocalDateTime.parse(date1, formatter);
+        LocalDateTime dateTime2 = LocalDateTime.parse(date2, formatter);
 
-        String output = "date || credit || debit || balance\n2022-06-10 || 1,000.00 || || 1,000.00\n2022-06-11 || || 500.00 || 500.00";
-        assertEquals(output, subject.printStatement(testData));
+        Printer subject = new Printer();
+        TransactionHistoryItem t1 = new TransactionHistoryItem(dateTime1, 5000, 0, 5000);
+        TransactionHistoryItem t2 = new TransactionHistoryItem(dateTime1, 5000, 0, 10000);
+        TransactionHistoryItem t3 = new TransactionHistoryItem(dateTime2, 0, 3000, 7000);
+
+        String expectedOutput = "|| Date          || Credit        || Debit         || Balance       \n|| 2022-06-10    || 5000.00       ||               || 5000.00       \n|| 2022-06-10    || 5000.00       ||               || 10000.00      \n|| 2022-06-11    ||               || 3000.00       || 7000.00       \n";
+
+        assertEquals(expectedOutput, subject.printHistory(Arrays.asList(t1, t2, t3)));
     }
 }

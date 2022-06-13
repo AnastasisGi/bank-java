@@ -13,15 +13,17 @@ public class Transaction {
     private LocalDateTime date;
     private TransactionType type;
 
-    public Transaction(float amount) {
-        this.amount = amount;
-        this.type = amount > 0 ? TransactionType.DEPOSIT : TransactionType.WITHDRAWAL;
-        this.date = LocalDateTime.now(Clock.systemDefaultZone());
+    public Transaction(float amount, TransactionType type) {
+        this(amount, type, Clock.systemDefaultZone());
     }
 
-    public Transaction(float amount, Clock clock) {
+    public Transaction(float amount, TransactionType type, Clock clock) {
+        if(amount < 0) {
+            throw new RuntimeException("Amount must be positive");
+        }
+
         this.amount = amount;
-        this.type = amount > 0 ? TransactionType.DEPOSIT : TransactionType.WITHDRAWAL;
+        this.type = type;
         this.date = LocalDateTime.now(clock);
     }
 

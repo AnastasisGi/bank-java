@@ -2,6 +2,7 @@ package bank.java;
 
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
@@ -24,9 +25,17 @@ public class TransactionTest {
 
     @Test
     public void canCreateTransaction() {
-        Transaction subject = new Transaction(1000, clock);
+        Transaction subject = new Transaction(1000, TransactionType.DEPOSIT, clock);
         assertEquals(1000, subject.getAmount(), 0);
         assertEquals(TransactionType.DEPOSIT, subject.getType());
-        assertEquals(LocalDateTime.now(clock) ,subject.getDate());
+        assertEquals(LocalDateTime.now(clock), subject.getDate());
+    }
+
+    @Test
+    public void cannotCreateNegativeAmountTransactions() {
+        RuntimeException e = assertThrows(
+                RuntimeException.class, () -> new Transaction(-1000, TransactionType.DEPOSIT, clock));
+
+        assertEquals("Amount must be positive", e.getMessage());
     }
 }
